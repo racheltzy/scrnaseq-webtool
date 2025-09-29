@@ -105,6 +105,7 @@ if "X_pca" in adata.obsm_keys():
 
     # --- User chooses PCs for downstream analysis ---
     st.subheader("🔧 Select number of PCs for downstream analysis")
+    st.markdown("""This is based on where the elbow plot plateaus.""")
     n_pcs_final = st.number_input(
         "Number of PCs to use (for clustering, UMAP, etc.):",
         min_value=5, max_value=100, value=30, step=5
