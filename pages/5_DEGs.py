@@ -242,3 +242,17 @@ if "rank_genes_groups" in adata.uns:
     #     fig = plt.gcf()
     #     st.pyplot(fig)
     #     plt.close(fig)
+
+# --- Show "Next" link only after DE is done ---
+    st.markdown("""
+    <style>
+    section[data-testid="stMain"] [data-testid="stPageLink"] a,
+    section[data-testid="stMain"] [data-testid="stPageLink"] p {
+      font-style: italic !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    spacer, right = st.columns([0.5, 0.255], gap="small")
+    with right:
+        st.page_link("pages/6_Assign_Cell_Type_Identity.py", label="➡️ Next: Assign Cell Identity")

@@ -65,7 +65,7 @@ if st.button("Run PCA"):
     adata.uns["n_pcs_selected"] = n_comps
     st.session_state["n_pcs"] = n_comps
 
-    st.success(f"✅ PCA done with n_comps={n_comps}, use_highly_variable={use_highly_variable}.")
+    st.success(f"✅ PCA done with n_comps={n_comps}")
     st.session_state["adata"] = adata
     wait_placeholder.empty()
 
@@ -142,7 +142,7 @@ if "X_pca" in adata.obsm_keys():
                     - Bright = high expression  
                 """)
     
-    # # 提示框
+    # Choose marker genes
     # st.info("""
     # 💡 **Tip:** Marker genes are genes whose expression highlights specific cell types.  
     # Here are some commonly used marker genes in PBMC data:
@@ -150,7 +150,8 @@ if "X_pca" in adata.obsm_keys():
     # - **NKG7** → NK cell / cytotoxic T cell marker  
     # - **MS4A1** → B cell marker  
     # - **CD3D** → T cell marker  
-    # - **PPBP** → Platelet marker  
+    # - **PPBP** → Platelet marker 
+    # - **CCR7** → Naive T cell marker  
     # """)
 
     # x_pc = st.number_input("PC for X-axis", min_value=1, max_value=50, value=1, step=1)
@@ -169,6 +170,7 @@ if "X_pca" in adata.obsm_keys():
     #     st.pyplot(fig)
     #     plt.close(fig)
     # 🔹 提示框
+    
     st.info("""
     💡 **Tip:** Marker genes are genes whose expression highlights specific cell types.  
     Here are some commonly used marker genes in PBMC data:
@@ -177,17 +179,18 @@ if "X_pca" in adata.obsm_keys():
     - **NKG7** → NK cell / cytotoxic T cell marker  
     - **MS4A1** → B cell marker  
     - **CD3D** → T cell marker  
-    - **PPBP** → Platelet marker  
+    - **PPBP** → Platelet marker
+    - **CCR7** → Naive T cell marker 
     """)
 
-    # 默认 marker gene 列表
-    marker_genes = ["CST3", "NKG7", "MS4A1", "CD3D", "PPBP"]
+    # Choosing marker genes
+    marker_genes = ["CST3", "NKG7", "MS4A1", "CD3D", "PPBP", "CCR7"]
 
-    # 选择 PCs
+    # Input number of PCs
     x_pc = st.number_input("PC for X-axis", min_value=1, max_value=50, value=1, step=1)
     y_pc = st.number_input("PC for Y-axis", min_value=1, max_value=50, value=2, step=1)
 
-    # 选择基因（可以多选）
+    # Select genes
     selected_genes = st.multiselect(
         "Color cells by gene(s) (optional):",
         options=adata.var_names.tolist(),
@@ -195,7 +198,7 @@ if "X_pca" in adata.obsm_keys():
         help="Choose one or more genes. If left empty, no gene coloring will be applied."
     )
 
-    # 绘图按钮
+    # Plotting PCA
     if st.button("Plot PCA Scatter"):
         sc.pl.pca(
             adata,
@@ -213,7 +216,7 @@ if "X_pca" in adata.obsm_keys():
     st.markdown("See which genes drive each principal component (PC).")
 
     n_pcs_loadings = st.number_input(
-        "Number of PCs to inspect (must be even):",
+        "Number of PCs to inspect (must be even number to display):",
         min_value=2, max_value=20, value=6, step=2
     )
 
@@ -234,4 +237,21 @@ if "X_pca" in adata.obsm_keys():
 
 else:
     st.info("👉 Run PCA first to view elbow plot, scatter plot, and PC loadings.")
+
+# --- Show "Next: Clustering & UMAP" only after PCA is done ---
+if "X_pca" in adata.obsm_keys():
+    # italicize page_link labels in the main area
+    st.markdown("""
+    <style>
+    section[data-testid="stMain"] [data-testid="stPageLink"] a,
+    section[data-testid="stMain"] [data-testid="stPageLink"] p {
+      font-style: italic !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # push the link to the right; increase left column width to push link further right
+    spacer, right = st.columns([0.5, 0.2], gap="small")
+    with right:
+        st.page_link("pages/4_Clustering & UMAP.py", label="➡️ Next: Clustering & UMAP")
 

@@ -307,3 +307,24 @@ elif submodule == "Scaling":
 
             save_and_download(adata, "scaled_data.h5ad", "Download scaled data (.h5ad)")
 
+
+# --- Show "Next: PCA" only after Scaling, pinned bottom-right ---
+NEXT_PAGE = "pages/3_PCA.py"   
+
+show_next = (submodule == "Scaling") and st.session_state.get("scaled_done", False)
+
+if show_next:
+    # italicize just this page_link's label
+    st.markdown("""
+    <style>
+    section[data-testid="stMain"] [data-testid="stPageLink"] a,
+    section[data-testid="stMain"] [data-testid="stPageLink"] p {
+      font-style: italic !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # push the link to the right; tweak ratios to adjust position
+    spacer, right = st.columns([1.1, 0.2], gap="small")
+    with right:
+        st.page_link(NEXT_PAGE, label="➡️ Next: PCA")

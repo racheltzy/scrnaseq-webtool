@@ -13,7 +13,7 @@ The workflow includes:
 3. **Run UMAP** – embed the cells into 2D for visualization.  
 
 *👉 The selected number of PCs from PCA strongly influences clustering and UMAP.  
-It is recommended to use the same `n_pcs` as chosen in the previous step.*  
+It is recommended to use the same `n_pcs` as chosen in the previous step for clustering and generating UMAP.*  
 """)
 
 # --- Check if adata exists from Step 4 ---
@@ -37,7 +37,8 @@ else:
 
 n_pcs = st.number_input(
     "Number of PCs to use for neighbors:",
-    min_value=5, max_value=100, value=st.session_state.get("n_pcs", 20), step=5
+    min_value=5, max_value=100, value=st.session_state.get("n_pcs", 20), step=5,
+    help="Has to be less than or equal to n_pcs selected in previous step."
 )
 
 if st.button("Run neighbors"):
@@ -45,6 +46,8 @@ if st.button("Run neighbors"):
     wait_msg.info("⏳ Computing neighbors...")
 
     sc.pp.neighbors(adata, n_pcs=int(n_pcs))
+    #uses KNN algorithm, K-nearest neighbor where K represents the cluster size
+    #metric used is Euclidean to caluclate distance. (cell1-cell2)/2
 
     # ✅ Save PC selection so downstream always finds it
     adata.uns["n_pcs_selected"] = int(n_pcs)
@@ -82,7 +85,7 @@ if st.button("Run clustering and UMAP"):
         # Nearest neighbors graph (based on PCA)
         sc.pp.neighbors(adata, n_pcs=int(n_pcs))
 
-        # Leiden clustering
+        # Leiden clustering (identifies groups of nodes that are more densely connected to each other than tot eh rest of the network)
         sc.tl.leiden(
             adata,
             resolution=float(resolution),
@@ -112,9 +115,25 @@ if st.button("Run clustering and UMAP"):
 
         # Save back to session
         st.session_state["adata"] = adata
+        st.session_state["clustering_done"] = True # added this for next button
 
     except ImportError as e:
         wait_msg.empty()
         st.error("Leiden requires the `igraph` and `leidenalg` packages. "
                  "Please install them via conda or pip.")
         st.exception(e)
+
+# --- Show "Next" link only after clustering is done
+if st.session_state.get("clustering_done", False):
+    st.markdown("""
+    <style>
+    section[data-testid="stMain"] [data-testid="stPageLink"] a,
+    section[data-testid="stMain"] [data-testid="stPageLink"] p {
+      font-style: italic !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    spacer, right = st.columns([0.5, 0.2], gap="small")
+    with right:
+        st.page_link("pages/5_DEGs.py", label="➡️ Next: DEGs")

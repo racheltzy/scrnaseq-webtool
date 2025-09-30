@@ -141,3 +141,30 @@ if adata is not None:
         st.error(f"Could not display preview matrix: {e}")
 else:
     st.info("Please upload a dataset or select demo data to continue.")
+
+# --- Bottom-right "Next: Preprocessing" link ---
+# Right-align & italicize the "Next: Preprocessing" page link in the main area
+st.markdown("""
+<style>
+/* Only affect links rendered in the main content, not the sidebar */
+section[data-testid="stMain"] [data-testid="stPageLink"] a,
+section[data-testid="stMain"] [data-testid="stPageLink"] p {
+  font-style: italic !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+spacer, right = st.columns([0.6, 0.2], gap="small")
+
+
+# 2) Visibility logic:
+#    - For Option 3 (demo): show by default
+#    - For Option 1/2: show only when data has been uploaded (adata is not None)
+show_next = (option == "Use Demo Data") or (adata is not None)
+if show_next:
+    with right:
+        st.page_link(
+            "pages/2_Preprocessing.py",
+            label="➡️ Next: Preprocessing",
+        )
