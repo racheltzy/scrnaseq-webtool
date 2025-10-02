@@ -251,7 +251,7 @@ if "X_pca" in adata.obsm_keys():
     """, unsafe_allow_html=True)
 
     # push the link to the right; increase left column width to push link further right
-    spacer, right = st.columns([0.5, 0.2], gap="small")
+    spacer, right = st.columns([0.45, 0.2], gap="small")
     with right:
         st.page_link("pages/4_Clustering & UMAP.py", label="➡️ Next: Clustering & UMAP")
 
