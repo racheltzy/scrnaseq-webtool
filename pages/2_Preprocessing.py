@@ -328,3 +328,4 @@ if show_next:
     spacer, right = st.columns([1.1, 0.2], gap="small")
     with right:
         st.page_link(NEXT_PAGE, label="➡️ Next: PCA")
+        

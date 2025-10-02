@@ -354,3 +354,4 @@ if "rank_genes_groups" in adata.uns:
     spacer, right = st.columns([0.45, 0.2], gap="small")
     with right:
         st.page_link("pages/6_Assign_Cell_Type_Identity.py", label="➡️ Next: Assign Cell Identity")
+        

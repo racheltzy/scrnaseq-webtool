@@ -254,4 +254,5 @@ if "X_pca" in adata.obsm_keys():
     spacer, right = st.columns([0.45, 0.2], gap="small")
     with right:
         st.page_link("pages/4_Clustering & UMAP.py", label="➡️ Next: Clustering & UMAP")
+        
 

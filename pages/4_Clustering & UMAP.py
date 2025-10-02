@@ -137,3 +137,4 @@ if st.session_state.get("clustering_done", False):
     spacer, right = st.columns([1.0, 0.2], gap="small")
     with right:
         st.page_link("pages/5_DEGs.py", label="➡️ Next: DEGs")
+        

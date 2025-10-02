@@ -368,3 +368,4 @@ if st.button("Generate plot"):
         )
         buf.close()
         plt.close(fig)
+        
