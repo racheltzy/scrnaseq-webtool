@@ -39,7 +39,7 @@ st.subheader("📌 Step 1: Choose comparison mode")
 
 mode = st.radio(
     "How would you like to compare clusters?",
-    ["Cluster vs all other clusters", "Cluster vs cluster"],
+    ["Cluster vs all other clusters", "Cluster vs cluster", "All clusters vs rest"],
     help="""
     **Cluster vs all other clusters** 🧩  
     - Identifies marker genes that are uniquely upregulated in one cluster compared to **all remaining cells**.  

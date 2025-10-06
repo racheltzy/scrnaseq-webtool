@@ -35,15 +35,16 @@ st.info("""
 💡 **Tip:** Marker genes are genes whose expression highlights specific cell types.  
 Here are some commonly used marker genes in PBMC data:
 
-- **CST3** → dendritic cell / monocyte marker  
-- **NKG7** → NK cell / cytotoxic T cell marker  
-- **MS4A1** → B cell marker  
-- **CD3D** → T cell marker  
-- **PPBP** → Platelet marker  
+    - **CST3** → monocytes/dendritic cells  
+    - **NKG7** → NK / cytotoxic T cells  
+    - **MS4A1** → B cells  
+    - **CD3D** → T cells  
+    - **PPBP** → Platelets  
+    - **S100A4** → CD4 Memory T cells
 """)
 
 # Default marker list
-default_markers = ["CST3", "NKG7", "PPBP"]
+default_markers = ["CST3", "NKG7", "PPBP", "MS4A1", "CD3D", "S100A4"]
 
 # Gene list source
 gene_source = st.radio(
@@ -310,10 +311,11 @@ if marker_source == "Custom selection":
     - **MS4A1** → B cells  
     - **CD3D** → T cells  
     - **PPBP** → Platelets  
+    - **S100A4** → CD4 Memory T cells
     """)
 
     # Default markers
-    default_markers = ["CST3", "NKG7", "MS4A1", "CD3D", "PPBP"]
+    default_markers = ["CST3", "NKG7", "PPBP", "MS4A1", "CD3D", "S100A4"]
 
     marker_genes = st.multiselect(
         "Select marker genes to plot:",
